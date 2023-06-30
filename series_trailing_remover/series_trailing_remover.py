@@ -44,11 +44,13 @@ for file in files:
         subtitle_lang = re.sub(pattern_bracket, "", file_name)
         subtitle_lang = re.search(pattern_period, subtitle_lang)
         if subtitle_lang:
-            subtitle_lang = subtitle_lang.group(1).lower()
+            
+            subtitle_lang = subtitle_lang.group(1).lower().replace(" ","")
+            print(subtitle_lang)
 
-            if subtitle_lang == 'sc':
+            if 'sc' in subtitle_lang or 'chs' in subtitle_lang:
                 subtitle_lang = '.chs'
-            elif subtitle_lang == 'tc':
+            elif 'tc' in subtitle_lang or 'cht' in subtitle_lang:
                 subtitle_lang = '.cht'
             else: 
                 subtitle_lang = ''          

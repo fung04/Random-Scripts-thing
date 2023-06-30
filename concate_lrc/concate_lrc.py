@@ -5,8 +5,9 @@ concated_lyrics = str()
 lrc_dict = {}
 error_list = []
 
-rootdir = r"D:\Random Scripts thing\concate_lrc"
-#rootdir = r"C:\Users\Chan\Desktop\New folder (2)"
+#prompt user for directory
+rootdir = input("Enter directory: ")
+rootdir = r"{}".format(rootdir)
 
 for parent, dirnames, filenames in os.walk(rootdir):
     for filename in filenames:

@@ -2,7 +2,6 @@ import os
 from os.path import relpath
 import music_tag
 
-
 rootdir = r"C:\Users\Chan\Desktop\New folder (2)"
 
 extensions = ['flac', 'wav','dsf']

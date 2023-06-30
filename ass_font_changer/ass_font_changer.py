@@ -3,7 +3,7 @@ import shutil
 
 import ass
 
-rootdir = r"D:\Download\New folder\Yosuga no Sora"
+rootdir = r"D:\Download\[DMG&SumiSora&VCB-Studio] Engage Kiss [Ma10p_1080p]"
 
 extensions = ['cht', 'tc']
 print(rootdir)
