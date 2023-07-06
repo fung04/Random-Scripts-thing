@@ -2,13 +2,10 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
       caches.open('app-cache').then(function(cache) {
         return cache.addAll([
-            '/login.html',
-            '/slideshow_swiper.html',
-            '/js/jellyfin_api.js',
-            '/js/login.js',
-            '/js/blurhash_pure_js_port.min.js',
-            '/js/service-worker.js',
-            '/static/jellyfin.256x256.png',
+            './',
+            './slick.html',
+            './jellyfin_api.js',
+            './blurhash_pure_js_port.min.js',
             'https://unpkg.com/swiper/swiper-bundle.min.js',
             'https://unpkg.com/swiper/swiper-bundle.min.css',
             'https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@500&display=swap',

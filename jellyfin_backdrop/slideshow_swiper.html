@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <title>Jellyfin Slideshow</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@500&display=swap" rel="stylesheet">
+
     <style>
         html,
         body,
@@ -61,9 +64,7 @@
                 font-size: 30px;
             }
         }
-   </style>
-   <script>navigator.serviceWorker.register("service-worker.js")</script> 
-   <link rel="manifest" href="manifest.json" /> 
+    </style>
 </head>
 
 <body>
@@ -79,13 +80,29 @@
             </div>
         </div>
     </div>
-    <script src="./jellyfin_api.js"></script>
+        <!-- Add service worker registration -->
+        <script>
+            // if ('serviceWorker' in navigator) {
+            //     window.addEventListener('load', function () {
+            //         navigator.serviceWorker.register('js/service-worker.js').then(function (registration) {
+            //             alert('ServiceWorker registration successful with scope: ');
+            //             console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            //         }, function (err) {
+            //             alert('ServiceWorker registration failed: ');
+            //             console.log('ServiceWorker registration failed: ', err);
+            //         });
+            //     });
+            // }
+        </script>
+
+
+    <script src="js/jellyfin_api.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="./blurhash_pure_js_port.min.js"></script>
+    <script src="js/blurhash_pure_js_port.min.js"></script>
     <script>
         var swiper;
         (async function () {
-            const videoIds = await ApiClient.getAllVideoIds(); 
+            const videoIds = await ApiClient.getAllVideoIds();
 
             let currentIndex = 0;
 
@@ -105,7 +122,7 @@
                         if (currentIndex >= videoIds.length) {
                             currentIndex = 0; // Reset index if end of list is reached
                         }
-                        console.log(currentIndex);
+                        //console.log(currentIndex);
                         var nextSlideIndex = 1; // 1
 
                         const nextSlide = swiper.slides[0];

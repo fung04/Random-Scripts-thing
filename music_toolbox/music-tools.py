@@ -89,11 +89,20 @@ def tag_to_filename():
         ">": ")",
     }
 
+    ## ask user for album or single
+    user_input = input("\n\nIs this album or single? (a/s) ")
+    
+
+
     for file, file_extension, file_name in get_file_info():
 
         # get tag info from music file then rename file
         tag_info = music_tag.load_file(file)
-        tag_name = f"{tag_info['title']} - {tag_info['artist']}"
+        
+        if user_input == "a":
+            tag_name = f"{tag_info['title']}"
+        elif user_input == "s":
+            tag_name = f"{tag_info['title']} - {tag_info['artist']}"
 
         # idetify and replace Windows illegal character
         for i, j in illegal_character.items():

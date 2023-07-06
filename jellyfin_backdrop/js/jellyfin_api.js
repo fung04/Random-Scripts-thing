@@ -11,9 +11,9 @@ const VideoType = {
 };
 
 class ApiConstant {
-    static baseUrl = 'jellychan.duckdns.org';
+    static baseUrl = '';
     static port = 443;
-    static apiKey = '{API_KEY}';
+    static apiKey = '';
 }
 
 class ApiClient {
