@@ -9,16 +9,16 @@ from dotenv import load_dotenv
 
 url = "https://hk4e-api-os.mihoyo.com/event/sol/sign?lang=en-us"
 
-# get from cookies
+# get from www.hoyolab.com
+# after login, get it from inspect element -> storage -> cookies
 mhyuuid = os.getenv("mhyuuid")
-
-# get from https://hk4e-api-os.mihoyo.com/event/sol/info?lang=en-us
 account_id = os.getenv("account_id")
 cookie_token = os.getenv("cookie_token")
 ltoken = os.getenv("ltoken")
 ltuid = os.getenv("ltuid")
 
-# get from checkin page
+# get from checkin page link, access via checking button in HoYoLAB
+# https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id={payload} <- this
 payload = f'{{"act_id": "{os.getenv("payload")}" }}'
 
 header = {"Cookie": f"ltuid={ltuid}; ltoken={ltoken}; account_id={account_id}; cookie_token={cookie_token}; mhyuuid={mhyuuid};",

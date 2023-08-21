@@ -92,8 +92,6 @@ def tag_to_filename():
     ## ask user for album or single
     user_input = input("\n\nIs this album or single? (a/s) ")
     
-
-
     for file, file_extension, file_name in get_file_info():
 
         # get tag info from music file then rename file
