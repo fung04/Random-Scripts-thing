@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import urllib.parse as parse
 from urllib.request import urlopen
 
@@ -16,9 +17,9 @@ class LyricFetcher:
             "<": "(",
             ">": ")",
         }
-        self.lyric_api_url = 'https://autumnfish.cn/lyric?id='
-        self.album_api_url = 'https://autumnfish.cn/album?id='
-        self.search_song_url = 'https://music.163.com/#/search/m/?s='
+        self.lyric_api_url = 'https://neteasecloudmusicapi.vercel.app/lyric?id='
+        self.album_api_url = 'https://neteasecloudmusicapi.vercel.app/album?id='
+        self.search_song_url = 'https://react-netease-cloud-music.vercel.app/search?s={}&type=1'
 
     def search_album(self, album_id):
         album_api_response = urlopen(self.album_api_url + str(album_id))
@@ -34,7 +35,6 @@ class LyricFetcher:
         if song_id and song_id != '0':
             lyric_api_response = urlopen(self.lyric_api_url + str(song_id))
             lyric_json = json.loads(lyric_api_response.read())
-
             try:
                 lyric = lyric_json['lrc']['lyric']
                 tlyric = lyric_json['tlyric']['lyric']
@@ -47,15 +47,24 @@ class LyricFetcher:
 
     def export_lyric(self, lyric, song_name):
         for i, j in self.illegal_character.items():
-            song_name = song_name.replace(i, j) 
-
-        for song, file_extension, file_name in self.get_song_list():
-            if file_name in song_name:
-                break
+            song_name = song_name.replace(i, j)
         
-        with open(f'{file_name}.lrc', 'wt', encoding='utf-8') as f:
+        for song, file_extension, file_name in self.get_song_list():
+            track_no_pattern = r'(\d\d)\.'
+            track_no_song_match = re.search(track_no_pattern, song_name)
+            track_no_file_match = re.search(track_no_pattern, file_name)
+            
+            if track_no_song_match and track_no_file_match:
+                track_no_song = track_no_song_match.group(1)
+                track_no_file = track_no_file_match.group(1)
+                
+                if track_no_song == track_no_file:
+                    song_name = file_name
+                    break
+
+        with open(f'{song_name}.lrc', 'wt', encoding='utf-8') as f:
             f.write(lyric)
-            print(f'\nLyric has been exported to {file_name}.lrc\n')
+            print(f'\nLyric has been exported to {song_name}.lrc\n')
 
     def get_song_list(self):
         files = os.listdir()
@@ -82,7 +91,7 @@ class LyricFetcher:
 
     def lookup_song(self, song_name):
         song_name = parse.quote(song_name)
-        cmd_command = f'powershell start "{self.search_song_url}{song_name}"'
+        cmd_command = f'powershell start """{self.search_song_url.format(song_name)}"""'
         os.system(cmd_command)
         song_name = parse.unquote(song_name)
 

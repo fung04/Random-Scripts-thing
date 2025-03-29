@@ -16,10 +16,10 @@ def update_directory_tree(playlist_relative_path=None, playlist_folder_list=None
             if dirpath == root_path:
                 continue # skip checking root path
             
-            if len(filenames) > 0 and any(f.split('.')[-1] in ext for f in filenames):
+            if len(filenames) > 0 and any(f.split('.')[-1] in ext for f in filenames): # Get only folders with music files
                 parent = directory_tree.insert('', 'end', text=os.path.basename(dirpath), open=False)
             
-            if playlist_folder_list and os.path.basename(dirpath) in playlist_folder_list:
+            if playlist_folder_list and os.path.basename(dirpath) in playlist_folder_list: # if playlist is provided
                 for f in filenames:    
                     file_relative_path = os.path.relpath(f'{dirpath}\{f}')
                     file_extension = f.split('.')[-1]
@@ -35,7 +35,7 @@ def update_directory_tree(playlist_relative_path=None, playlist_folder_list=None
                             directory_tree._tristate_parent(parent) 
                     
                         directory_tree.insert(parent, 'end', text=f, values=(file_duration, file_relative_path,))
-            else:
+            else: # if playlist is not provided
                 for f in filenames:    
                     file_relative_path = os.path.relpath(f'{dirpath}\{f}')
                     file_extension = f.split('.')[-1]

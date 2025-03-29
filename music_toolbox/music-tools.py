@@ -11,7 +11,7 @@ class MusicTools:
         
         # add music file extension to list if not exist here
         self.music_dict = {}
-        self.music_extension = ['mp3', 'flac', 'ape', 'm4a', 'dsf', 'aif']
+        self.music_extension = ['mp3', 'flac', 'ape', 'm4a', 'dsf', 'aif', 'aac']
 
         # regex pattern for japanese and chinese character
         self.japanese_pattern = re.compile(r'[\u3040-\u30ff]+')
@@ -122,7 +122,7 @@ class MusicTools:
             if user_input == "a":
                 tag_name = f"{tag_info['title']}"
             elif user_input == "s":
-                tag_name = f"{tag_info['title']} - {tag_info['artist']}"
+                tag_name = f"{tag_info['artist']} - {tag_info['title']}"
 
             # idetify and replace Windows illegal character
             for i, j in illegal_character.items():
@@ -157,12 +157,13 @@ class MusicTools:
 
             # identify track number is not empty
             track_number = int(tag_info['tracknumber'])
+            track_artist = str(tag_info['artist'])[0].upper()
 
             if track_number:
                 if leading_number == "0" or leading_number == "":
-                    file_with_track_number = f"{track_number:02d}. {file_name}"
+                    file_with_track_number = f"{track_artist}{track_number:02d}. {file_name}"
                 else:
-                    file_with_track_number = f"{leading_number}.{track_number:02d}. {file_name}"
+                    file_with_track_number = f"{track_artist}{leading_number}.{track_number:02d}. {file_name}"
             else:
                 file_with_track_number = f"{file_name}"
 
@@ -228,26 +229,27 @@ class MusicTools:
             # get metadata from music file
             tag_info = music_tag.load_file(file)
 
-            if not tag_info['comment']:
-                # backup tag_info['title'] to tage_info['comment']
+            if tag_info['title']:
                 tag_info['comment'] = tag_info['title']
-
-                # save file name to tag_info['title']
+                
                 tag_info['title'] = file_name
+                print(f"Music Title: {file_name}")
+                tag_info.save()
+            else:
+                print(f"\n\nNo title for {file_name}\n\n")
+    
+    def comment_to_title_tag(self):
+        for file, file_extension, file_name in self.get_file_info():
+
+            # get metadata from music file
+            tag_info = music_tag.load_file(file)
+
+            if tag_info['title']:
+                tag_info['title'] = tag_info['comment']
                 print(f"Music Title: {tag_info['title']}")
                 tag_info.save()
             else:
-                print(f"The comment: {tag_info['comment']} ")
-                user_input = input(
-                    f"\n\nDo you want to overwrite comment? (y/n) ")
-                if user_input == "y":
-                    tag_info['comment'] = tag_info['title']
-                    # save file name to tag_info['title']
-                    tag_info['title'] = file_name
-                    print(f"Music Title: {tag_info['title']}")
-                    tag_info.save()
-                else:
-                    print("Comment not overwritten")
+                print(f"\n\nNo title for {file_name}\n\n")
 
     def music_tool_menu(self):
         options = {
@@ -258,7 +260,8 @@ class MusicTools:
             "5": self.remove_leading_number,
             "6": self.lyrics_to_lrc_tag,
             "7": self.filename_to_title_tag,
-            "8": self.json_list_to_filename,
+            "8": self.comment_to_title_tag,
+            "9": self.json_list_to_filename,
             "chinese": [
                 self.chinese_to_pinyin,
                 self.lyrics_to_lrc_tag,
@@ -274,7 +277,8 @@ class MusicTools:
             "[5] Remove Leading Number\n"
             "[6] Embed Lyrics to Music lyric tag \n"
             "[7] Embed file name to Music title tag\n"
-            "[8] music_list.json to File\n\n"
+            "[8] Embed comment to Music title tag\n"
+            "[9] music_list.json to File\n\n"
             "Enter option: "
         )
 
